@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "target": "es5",
+    "outDir": "build",
+    "sourceMap": false,
+    "types": ["jest"],
+    "typeRoots": ["./node_modules/@types", "./typings"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["typings/**/*.d.ts", "src/**/*.ts"]
+}
