@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/reopen should fail when no account is found 1`] = `
+Object {
+  "body": Object {
+    "message": "Account not found",
+    "state": Object {},
+    "status": 404,
+  },
+  "headers": Object {
+    "connection": "close",
+    "content-length": "55",
+    "content-type": "application/json; charset=utf-8",
+    "strict-transport-security": "max-age=15552000; includeSubDomains",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "SAMEORIGIN",
+    "x-xss-protection": "1; mode=block",
+  },
+  "status": 404,
+}
+`;
+
+exports[`/reopen should find an account by email as failover 1`] = `
+Object {
+  "body": Object {
+    "message": "response sent",
+    "state": Object {
+      "account": Object {
+        "email": "measd@app.io",
+        "id": 1,
+        "locked": false,
+      },
+      "email": Object {
+        "id": 1,
+        "sent": true,
+        "to": "me@app.io",
+      },
+    },
+  },
+  "headers": Object {
+    "connection": "close",
+    "content-length": "140",
+    "content-type": "application/json; charset=utf-8",
+    "strict-transport-security": "max-age=15552000; includeSubDomains",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "SAMEORIGIN",
+    "x-xss-protection": "1; mode=block",
+  },
+  "status": 200,
+}
+`;
+
+exports[`/reopen should reopen a given account 1`] = `
+Object {
+  "body": Object {
+    "message": "response sent",
+    "state": Object {
+      "account": Object {
+        "email": "measd@app.io",
+        "id": 1,
+        "locked": false,
+      },
+      "email": Object {
+        "id": 1,
+        "sent": true,
+        "to": "me@app.io",
+      },
+    },
+  },
+  "headers": Object {
+    "connection": "close",
+    "content-length": "140",
+    "content-type": "application/json; charset=utf-8",
+    "strict-transport-security": "max-age=15552000; includeSubDomains",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "SAMEORIGIN",
+    "x-xss-protection": "1; mode=block",
+  },
+  "status": 200,
+}
+`;

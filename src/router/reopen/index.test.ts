@@ -1,6 +1,7 @@
-import request, { Request } from "supertest";
+import request from "supertest";
 import { createApp } from "@/app";
 import { UserService as User, EmailService as Email } from "@/services";
+import { snapshot } from "@/test/utils";
 
 // dependencies
 const users = new User();
@@ -21,7 +22,7 @@ describe("/reopen", () => {
 
     await request(app.callback())
       .get("/reopen/1")
-      .expect(200);
+      .expect(snapshot);
   });
 
   it("should find an account by email as failover", async () => {
@@ -31,7 +32,7 @@ describe("/reopen", () => {
 
     await request(app.callback())
       .get("/reopen/1")
-      .expect(200);
+      .expect(snapshot);
   });
 
   it("should fail when no account is found", async () => {
@@ -40,6 +41,6 @@ describe("/reopen", () => {
 
     await request(app.callback())
       .get("/reopen/1")
-      .expect(404);
+      .expect(snapshot);
   });
 });
