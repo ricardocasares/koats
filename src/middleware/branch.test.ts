@@ -1,5 +1,5 @@
 import { branch } from "./branch";
-import { Context, Middleware } from "@/models";
+import { Context } from "@/models";
 import { createContext } from "@/test/utils";
 
 describe("branch middleware", () => {

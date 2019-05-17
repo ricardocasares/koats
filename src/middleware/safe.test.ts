@@ -1,5 +1,5 @@
 import { safe } from "./safe";
-import { Context, Middleware } from "@/models";
+import { Context } from "@/models";
 import { createContext } from "@/test/utils";
 
 describe("safe middleware", () => {
@@ -11,32 +11,26 @@ describe("safe middleware", () => {
     next = jest.fn();
   });
 
-  it("should not throw", async () => {
-    const mw: Middleware = (ctx, next) => {
-      throw new Error();
-    };
-
-    const safely = safe(async (ctx, next, err) => next());
-
-    await safely(mw)(ctx, next);
-    expect(next).toHaveBeenCalledTimes(1);
+  it("should call the middleware", async () => {
+    const handler = jest.fn();
+    const middleware = jest.fn().mockResolvedValue(undefined);
+    await expect(safe(handler)(middleware)(ctx, next)).resolves.toBeUndefined();
+    expect(middleware).toHaveBeenCalledWith(ctx, next);
   });
 
-  it("should allow to throw", async () => {
-    const mw: Middleware = (ctx, next) => {
-      throw new Error("Not fun");
-    };
+  it("should call the handler", async () => {
+    const error = new Error();
+    const handler = jest.fn();
+    const middleware = jest.fn().mockRejectedValue(error);
 
-    const safely = safe((ctx, err) => {
-      throw new Error("Fun");
-    });
-
-    await expect(safely(mw)(ctx, next)).rejects.toThrow(/Fun/);
-    expect(next).toHaveBeenCalledTimes(0);
+    await expect(safe(handler)(middleware)(ctx, next)).resolves.toBeUndefined();
+    expect(handler).toHaveBeenCalledWith(ctx, next, error);
   });
 
-  it("should work when no errors are thrown", async () => {
-    await safe(ctx => ctx.called)(async (ctx, next) => next())(ctx, next);
-    expect(next).toHaveBeenCalledTimes(1);
+  it("should throw inside handler when needed", async () => {
+    const error = jest.fn().mockRejectedValue(new Error("Fun"));
+
+    await expect(safe(error)(error)(ctx, next)).rejects.toThrow(/Fun/);
+    expect(error).toHaveBeenCalledTimes(2);
   });
 });
