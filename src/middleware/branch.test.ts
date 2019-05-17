@@ -2,40 +2,32 @@ import { branch } from "./branch";
 import { Context, Middleware } from "@/models";
 import { createContext } from "@/test/utils";
 
-const mw: Middleware = async (ctx, next) => {
-  ctx.called = true;
-  await next();
-};
-
 describe("branch middleware", () => {
   let ctx: Context;
-  let next: jest.Mock;
+  let mdw: jest.Mock;
 
   beforeEach(() => {
     ctx = createContext({ called: false });
-    next = jest.fn();
+    mdw = jest.fn();
   });
 
-  it("should run the middleware when predicate is true", async () => {
-    await branch(ctx => !ctx.called)(mw)(ctx, next);
-    expect(ctx.called).toBe(true);
-    expect(next).toHaveBeenCalledTimes(1);
+  it("should call the predicate with context", async () => {
+    const p = jest.fn();
+    const mock = jest.fn();
+
+    await branch(p)(mock)(ctx, jest.fn());
+    expect(p).toHaveBeenCalledWith(ctx);
   });
 
-  it("should not run the middleware when predicate is false", async () => {
-    await branch(ctx => ctx.called)(mw)(ctx, next);
-    expect(ctx.called).toBe(false);
-    expect(next).toHaveBeenCalledTimes(1);
+  it("should call the middleware with ctx and next when true", async () => {
+    const next = jest.fn();
+
+    await branch(() => true)(mdw)(ctx, next);
+    expect(mdw).toHaveBeenCalledWith(ctx, next);
   });
 
-  it("should throw", async () => {
-    const fails: Middleware = ctx => {
-      throw new Error("Whoa!");
-    };
-
-    await expect(branch(ctx => !ctx.called)(fails)(ctx, next)).rejects.toThrow(
-      /Whoa/
-    );
-    expect(next).toHaveBeenCalledTimes(0);
+  it("should not call the middleware when false", async () => {
+    await branch(() => false)(mdw)(ctx, jest.fn());
+    expect(mdw).toHaveBeenCalledTimes(0);
   });
 });
