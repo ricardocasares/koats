@@ -6,9 +6,6 @@
   "author": "Ricardo Casares",
   "main": "src/index.ts",
   "scripts": {
-    "prebuild": "npm run clean",
-    "build": "tsc",
-    "clean": "rm -rf build/",
     "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts | pino-pretty",
     "start": "NODE_ENV=production ts-node -r tsconfig-paths/register -T src/index.ts",
     "test": "NODE_ENV=TEST jest"
