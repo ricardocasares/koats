@@ -13,4 +13,4 @@ export const snapshot = ({
   status,
   // @ts-ignore
   headers: { date, ...headers }
-}: Request) => expect({ body, status, headers }).toMatchSnapshot();
+}: Request) => expect({ status, body, headers }).toMatchSnapshot();
