@@ -1,5 +1,5 @@
 import { createApp } from "@/app";
-import { logger } from "@/lib/Logger";
+import { logger } from "@/lib/logger";
 import { UserService, EmailService } from "@/services";
 
 export const app = createApp({
