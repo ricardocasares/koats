@@ -9,4 +9,3 @@ export const errors: Middleware = async (ctx, next) => {
     ctx.body = { status: err.status, message: err.message, state: ctx.state };
   }
 };
-export default errors;

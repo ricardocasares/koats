@@ -1,5 +1,6 @@
 import { safe } from "@/middleware/safe";
 import { branch } from "@/middleware/branch";
+import { validate } from "./validate";
 import { getAccountById } from "./getAccountById";
 import { getAccountByEmail } from "./getAccountByEmail";
 import { unlockAccount } from "./unlockAccount";
@@ -12,6 +13,7 @@ const ifNoAccount = branch(ctx => !ctx.state.account);
 const accountNotFound = safe(ctx => ctx.throw(404, "Account not found"));
 
 export default [
+  validate,
   safeGetAccount(getAccountById),
   ifNoAccount(accountNotFound(getAccountByEmail)),
   unlockAccount,

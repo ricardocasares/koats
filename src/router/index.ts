@@ -1,4 +1,4 @@
-import { router } from "@/koa";
+import { router as KoaRouter } from "@/koa";
 import reopen from "./reopen";
 
-export default router.get("/reopen/:id", ...reopen);
+export const router = KoaRouter.get("/reopen/:id", ...reopen);
