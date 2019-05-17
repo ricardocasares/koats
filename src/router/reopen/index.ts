@@ -1,15 +1,19 @@
-import branch from "@/middleware/branch";
-import getAccountById from "./getAccountById";
-import getAccountByEmail from "./getAccountByEmail";
-import unlockAccount from "./unlockAccount";
-import sendEmail from "./sendEmail";
-import sendResponse from "./sendResponse";
+import { safe } from "@/middleware/safe";
+import { branch } from "@/middleware/branch";
+import { getAccountById } from "./getAccountById";
+import { getAccountByEmail } from "./getAccountByEmail";
+import { unlockAccount } from "./unlockAccount";
+import { sendEmail } from "./sendEmail";
+import { sendResponse } from "./sendResponse";
 
-const accountNotFound = branch(ctx => !ctx.state.account);
+// @todo: next line should match a more specific error
+const safeGetAccount = safe(async (ctx, next, err) => next());
+const ifNoAccount = branch(ctx => !ctx.state.account);
+const accountNotFound = safe(ctx => ctx.throw(404, "Account not found"));
 
 export default [
-  getAccountById,
-  accountNotFound(getAccountByEmail),
+  safeGetAccount(getAccountById),
+  ifNoAccount(accountNotFound(getAccountByEmail)),
   unlockAccount,
   sendEmail,
   sendResponse

@@ -1,7 +1,13 @@
 import { createApp } from "@/app";
-import { Dependencies } from "@/models";
-import { Users, Email, Logger } from "@/services";
+import { logger } from "@/lib/Logger";
+import { UserService, EmailService } from "@/services";
 
-createApp(new Dependencies(new Users(), new Email(), Logger)).listen(3000, () =>
-  Logger.info("server started http://localhost:3000/")
-);
+export const app = createApp({
+  users: new UserService(),
+  emails: new EmailService()
+})
+  .listen(3000)
+  .on("close", () => logger.info("close"))
+  .on("error", () => logger.error("error"))
+  .on("connection", () => logger.info("connection"))
+  .on("listening", () => logger.info("server started http://localhost:3000/"));

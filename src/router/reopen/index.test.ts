@@ -1,17 +1,45 @@
-import request from "supertest";
+import request, { Request } from "supertest";
 import { createApp } from "@/app";
-import { Users, Email, Logger } from "@/services";
-import { Dependencies } from "@/models";
+import { UserService as User, EmailService as Email } from "@/services";
 
-const deps = new Dependencies(new Users(), new Email(), Logger);
+// dependencies
+const users = new User();
+const emails = new Email();
+
+// mocked data
+const user = { id: 1, email: "me@app.io", locked: true };
+const email = { id: 1, to: "me@app.io", sent: true };
+
+// init application
+const app = createApp({ users, emails });
 
 describe("/reopen", () => {
-  it("should reopen an given account", async () => {
-    const app = createApp(deps);
+  it("should reopen a given account", async () => {
+    jest.spyOn<User, "id">(users, "id").mockResolvedValue(user);
+    jest.spyOn<User, "email">(users, "email").mockResolvedValue(user);
+    jest.spyOn<Email, "send">(emails, "send").mockResolvedValue(email);
 
-    await request(app)
+    await request(app.callback())
       .get("/reopen/1")
-      .expect(res => expect(res.text).toMatchSnapshot())
       .expect(200);
+  });
+
+  it("should find an account by email as failover", async () => {
+    jest.spyOn<User, "id">(users, "id").mockRejectedValue(new Error());
+    jest.spyOn<User, "email">(users, "email").mockResolvedValue(user);
+    jest.spyOn<Email, "send">(emails, "send").mockResolvedValue(email);
+
+    await request(app.callback())
+      .get("/reopen/1")
+      .expect(200);
+  });
+
+  it("should fail when no account is found", async () => {
+    jest.spyOn<User, "id">(users, "id").mockRejectedValue(new Error());
+    jest.spyOn<User, "email">(users, "email").mockRejectedValue(new Error());
+
+    await request(app.callback())
+      .get("/reopen/1")
+      .expect(404);
   });
 });

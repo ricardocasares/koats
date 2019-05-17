@@ -1,19 +1,12 @@
 import { Middleware, Context } from "@/models";
 
-export interface Condition {
+export interface Predicate {
   (ctx: Context): boolean;
 }
 
-export default function(condition: Condition) {
-  return (middleware: Middleware): Middleware => {
-    const mw: Middleware = async (ctx, next) => {
-      if (condition(ctx)) {
-        await middleware(ctx, next);
-      } else {
-        await next();
-      }
-    };
-
-    return mw;
-  };
-}
+export const branch = (p: Predicate) => (mw: Middleware): Middleware => async (
+  ctx,
+  next
+) => {
+  p(ctx) ? await mw(ctx, next) : await next();
+};

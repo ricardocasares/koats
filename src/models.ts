@@ -1,19 +1,32 @@
 import Koa from "koa";
 import KoaRouter from "koa-router";
 import { Logger } from "pino";
-import { Users, IUser, Email, IEmail } from "@/services";
+import { UserService, EmailService } from "@/services";
+
+export interface User {
+  id: number;
+  email: string;
+  locked: boolean;
+}
+
+export interface Email {
+  id: number;
+  to: string;
+  sent: boolean;
+}
 
 export interface State {
-  email: IEmail;
-  account: IUser;
+  email: Email;
+  account: User;
 }
 
-export class Dependencies {
-  constructor(public users: Users, public email: Email, public log: Logger) {}
+export interface Dependencies {
+  readonly users: UserService;
+  readonly emails: EmailService;
 }
 
-export interface Context {
-  di: Dependencies;
+export interface Context extends Koa.Context {
+  dc: Dependencies;
   state: State;
 }
 

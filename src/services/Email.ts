@@ -1,11 +1,7 @@
-export type IEmail = {
-  id: number;
-  to: string;
-  sent: boolean;
-};
+import { Email } from "@/models";
 
-export class Email {
-  send(name: string): Promise<IEmail> {
+export class EmailService {
+  send(name: string): Promise<Email> {
     return Promise.resolve({ id: 1, to: name, sent: true });
   }
 }

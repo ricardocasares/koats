@@ -1,23 +1,15 @@
-import { Middleware } from "@/models";
+import { Middleware, Context } from "@/models";
 
-export interface Condition {
-  (err: Error): boolean;
+export interface Handler {
+  (ctx: Context, next: () => Promise<any>, err: Error): void;
 }
 
-export default function(condition: Condition) {
-  return (middleware: Middleware): Middleware => {
-    const mw: Middleware = async (ctx, next) => {
-      try {
-        await middleware(ctx, next);
-      } catch (err) {
-        if (condition(err)) {
-          await next();
-        } else {
-          throw err;
-        }
-      }
-    };
-
-    return mw;
-  };
-}
+export const safe = (handler: Handler) => (
+  middleware: Middleware
+): Middleware => async (ctx, next) => {
+  try {
+    await middleware(ctx, next);
+  } catch (err) {
+    await handler(ctx, next, err);
+  }
+};
