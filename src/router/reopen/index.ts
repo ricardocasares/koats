@@ -12,7 +12,7 @@ const safeGetAccount = safe(async (ctx, next, err) => next());
 const ifNoAccount = branch(ctx => !ctx.state.account);
 const accountNotFound = safe(ctx => ctx.throw(404, "Account not found"));
 
-export default [
+export const reopen = [
   validate,
   safeGetAccount(getAccountById),
   ifNoAccount(accountNotFound(getAccountByEmail)),
