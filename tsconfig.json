@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
+    "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "module": "commonjs",

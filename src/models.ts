@@ -1,6 +1,5 @@
 import Koa from "koa";
 import KoaRouter from "koa-router";
-import { Logger } from "pino";
 import { UserService, EmailService } from "@/services";
 
 export interface User {
