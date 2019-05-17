@@ -12,7 +12,7 @@ const user = { id: 1, email: "me@app.io", locked: true };
 const email = { id: 1, to: "me@app.io", sent: true };
 
 // init application
-const app = createApp({ users, emails });
+const app = createApp({ users, emails }).callback();
 
 describe("/reopen", () => {
   it("should reopen a given account", async () => {
@@ -20,7 +20,7 @@ describe("/reopen", () => {
     jest.spyOn<User, "email">(users, "email").mockResolvedValue(user);
     jest.spyOn<Email, "send">(emails, "send").mockResolvedValue(email);
 
-    await request(app.callback())
+    await request(app)
       .get("/reopen/1")
       .expect(snapshot);
   });
@@ -30,7 +30,7 @@ describe("/reopen", () => {
     jest.spyOn<User, "email">(users, "email").mockResolvedValue(user);
     jest.spyOn<Email, "send">(emails, "send").mockResolvedValue(email);
 
-    await request(app.callback())
+    await request(app)
       .get("/reopen/1")
       .expect(snapshot);
   });
@@ -39,7 +39,7 @@ describe("/reopen", () => {
     jest.spyOn<User, "id">(users, "id").mockRejectedValue(new Error());
     jest.spyOn<User, "email">(users, "email").mockRejectedValue(new Error());
 
-    await request(app.callback())
+    await request(app)
       .get("/reopen/1")
       .expect(snapshot);
   });
