@@ -6,7 +6,7 @@ export class UserService {
   }
 
   email(email: string): Promise<User> {
-    return Promise.resolve({ id: 1, email: "pete", locked: true });
+    return Promise.resolve({ id: 1, email, locked: true });
   }
 
   unlock(id: number): Promise<User> {

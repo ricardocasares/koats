@@ -28,7 +28,7 @@ Object {
     "message": "response sent",
     "state": Object {
       "account": Object {
-        "email": "measd@app.io",
+        "email": "me@app.io",
         "id": 1,
         "locked": false,
       },
@@ -41,7 +41,7 @@ Object {
   },
   "headers": Object {
     "connection": "close",
-    "content-length": "140",
+    "content-length": "137",
     "content-type": "application/json; charset=utf-8",
     "strict-transport-security": "max-age=15552000; includeSubDomains",
     "x-content-type-options": "nosniff",
@@ -60,7 +60,7 @@ Object {
     "message": "response sent",
     "state": Object {
       "account": Object {
-        "email": "measd@app.io",
+        "email": "me@app.io",
         "id": 1,
         "locked": false,
       },
@@ -73,7 +73,7 @@ Object {
   },
   "headers": Object {
     "connection": "close",
-    "content-length": "140",
+    "content-length": "137",
     "content-type": "application/json; charset=utf-8",
     "strict-transport-security": "max-age=15552000; includeSubDomains",
     "x-content-type-options": "nosniff",

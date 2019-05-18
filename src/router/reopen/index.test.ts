@@ -17,7 +17,9 @@ const app = createApp({ users, emails }).callback();
 describe("/reopen", () => {
   it("should reopen a given account", async () => {
     jest.spyOn<User, "id">(users, "id").mockResolvedValue(user);
-    jest.spyOn<User, "email">(users, "email").mockResolvedValue(user);
+    jest
+      .spyOn<User, "unlock">(users, "unlock")
+      .mockResolvedValue({ ...user, locked: false });
     jest.spyOn<Email, "send">(emails, "send").mockResolvedValue(email);
 
     await request(app)
@@ -28,6 +30,9 @@ describe("/reopen", () => {
   it("should find an account by email as failover", async () => {
     jest.spyOn<User, "id">(users, "id").mockRejectedValue(new Error());
     jest.spyOn<User, "email">(users, "email").mockResolvedValue(user);
+    jest
+      .spyOn<User, "unlock">(users, "unlock")
+      .mockResolvedValue({ ...user, locked: false });
     jest.spyOn<Email, "send">(emails, "send").mockResolvedValue(email);
 
     await request(app)
