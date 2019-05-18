@@ -42,25 +42,50 @@ In turn, error handling is achieved by composition of other middleware.
 
 #### safe
 
-This middleware allows to run code in the `catch` block of a middleware that has throwed.
+Decouples error handling logic from middleware.
 
 ```ts
-async function callService(ctx, next) {
-  // This might throw
-  await ctx.dc.someService.get();
-  await next();
-}
-
-// here you will handle the error
-const safeMiddleware = safe((ctx, next, err) => {
-  if (err.name === "SomeError") {
-    // this error is safe enough to continue
-    return await next();
+const safe = (a: Middleware) => (b: Middleware): Middleware => async (
+  ctx,
+  next
+) => {
+  try {
+    await a(ctx, next);
+  } catch (err) {
+    ctx.err = err;
+    await b(ctx, next);
   }
+};
+```
 
-  // we die if not
+This middleware allows to run code in the `catch` block of a middleware that has throwed.
+
+This way we have a `happy path` and the `error path`.
+
+```ts
+import { safe } from "@/middleware/safe";
+import { Middleware } from "@/models";
+
+// Your heart tells you to do things
+const heart: Middleware = (ctx, next) => {
+  throw new Error("But things can go wrong");
+};
+
+// So you can fix it
+const withYourMind: Middleware = (ctx, next) => {
+  if (ctx.err.message.includes("wrong")) {
+    // Our app keeps running
+    return next();
+  }
+  // Sometimes there's nothing we can do about it!
   throw err;
-});
+};
 
-const safeCallService = safeMiddleware(callService);
+const saveYourHeart = safe(heart);
+
+// Combine them into one
+app.use(saveYourHeart(withYourMind)).use((ctx, next) => {
+  // To keep doing what you need
+  return next();
+});
 ```

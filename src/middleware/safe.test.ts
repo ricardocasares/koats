@@ -14,7 +14,7 @@ describe("safe middleware", () => {
   it("should call the middleware", async () => {
     const handler = jest.fn();
     const middleware = jest.fn().mockResolvedValue(undefined);
-    await expect(safe(handler)(middleware)(ctx, next)).resolves.toBeUndefined();
+    await expect(safe(middleware)(handler)(ctx, next)).resolves.toBeUndefined();
     expect(middleware).toHaveBeenCalledWith(ctx, next);
   });
 
@@ -23,8 +23,9 @@ describe("safe middleware", () => {
     const handler = jest.fn();
     const middleware = jest.fn().mockRejectedValue(error);
 
-    await expect(safe(handler)(middleware)(ctx, next)).resolves.toBeUndefined();
-    expect(handler).toHaveBeenCalledWith(ctx, next, error);
+    await expect(safe(middleware)(handler)(ctx, next)).resolves.toBeUndefined();
+    expect(handler).toHaveBeenCalledWith(ctx, next);
+    expect(handler).toHaveBeenCalledWith(ctx, next);
   });
 
   it("should throw inside handler when needed", async () => {
