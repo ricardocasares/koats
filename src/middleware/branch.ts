@@ -4,7 +4,7 @@ export interface Predicate {
   (ctx: Context): boolean;
 }
 
-export const branch = (p: Predicate) => (mw: Middleware): Middleware => async (
+export const branch = (mw: Middleware) => (p: Predicate): Middleware => async (
   ctx,
   next
 ) => {

@@ -16,18 +16,18 @@ describe("branch middleware", () => {
     const mock = jest.fn();
 
     await branch(p)(mock)(ctx, jest.fn());
-    expect(p).toHaveBeenCalledWith(ctx);
+    expect(mock).toHaveBeenCalledWith(ctx);
   });
 
   it("should call the middleware with ctx and next when true", async () => {
     const next = jest.fn();
 
-    await branch(() => true)(mdw)(ctx, next);
+    await branch(mdw)(() => true)(ctx, next);
     expect(mdw).toHaveBeenCalledWith(ctx, next);
   });
 
   it("should not call the middleware when false", async () => {
-    await branch(() => false)(mdw)(ctx, jest.fn());
+    await branch(mdw)(() => false)(ctx, jest.fn());
     expect(mdw).toHaveBeenCalledTimes(0);
   });
 });
