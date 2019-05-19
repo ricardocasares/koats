@@ -10,11 +10,9 @@ const getAccountOrNext = safe(getAccountById)(async (ctx, next) => {
   await next();
 });
 
-const safeGetAccountByEmail = safe(getAccountByEmail)(async (ctx, next) => {
+const safeGetAccountByEmail = safe(getAccountByEmail)(async ctx => {
   ctx.log.error(ctx.err, "Failed to get an account");
   ctx.throw(404, "Account not found");
-
-  await next();
 });
 
 const getAccountOr404 = branch(safeGetAccountByEmail);
