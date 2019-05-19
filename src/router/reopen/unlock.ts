@@ -3,6 +3,7 @@ import { unlockAccount } from "@/middleware/unlockAccount";
 
 const safeUnlock = safe(unlockAccount);
 
-export const unlock = safeUnlock(async ctx =>
-  ctx.throw(403, "Cannot unlock this account")
-);
+export const unlock = safeUnlock(async ctx => {
+  ctx.log.error(ctx.err, "Cannot unlock the account");
+  ctx.throw(403, "Cannot unlock this account");
+});
