@@ -1,11 +1,25 @@
+import compose from "koa-compose";
 import { safe } from "@/middleware/safe";
+import { branch } from "@/middleware/branch";
 import { getAccountById } from "@/middleware/getAccountById";
 import { getAccountByEmail } from "@/middleware/getAccountByEmail";
 
-const getAccountOr = safe(getAccountById);
-const accountNotFound = safe(getAccountByEmail)(ctx =>
-  // @todo: this line should match a more specific error
-  ctx.throw(404, "Account not found")
-);
+const getAccountOrNext = safe(getAccountById)(async (ctx, next) => {
+  ctx.log.warn(ctx.err, "Failover to get by email");
 
-export const getAccount = getAccountOr(accountNotFound);
+  await next();
+});
+
+const safeGetAccountByEmail = safe(getAccountByEmail)(async (ctx, next) => {
+  ctx.log.error(ctx.err, "Failed to get an account");
+  ctx.throw(404, "Account not found");
+
+  await next();
+});
+
+const getAccountOr404 = branch(safeGetAccountByEmail);
+
+export const getAccount = compose([
+  getAccountOrNext,
+  getAccountOr404(ctx => !ctx.state.account)
+]);

@@ -1,5 +1,6 @@
+import compose from "koa-compose";
 import { safe } from "./safe";
-import { Context } from "@/models";
+import { Context, Middleware } from "@/models";
 import { createContext } from "@/test/utils";
 
 describe("safe middleware", () => {
@@ -15,7 +16,15 @@ describe("safe middleware", () => {
     const handler = jest.fn();
     const middleware = jest.fn().mockResolvedValue(undefined);
     await expect(safe(middleware)(handler)(ctx, next)).resolves.toBeUndefined();
-    expect(middleware).toHaveBeenCalledWith(ctx, next);
+    expect(middleware).toHaveBeenCalled();
+  });
+
+  it("should call next", async () => {
+    const handler = jest.fn();
+    const middleware: Middleware = (c, n) => n();
+    await expect(safe(middleware)(handler)(ctx, next)).resolves.toBeUndefined();
+    expect(next).toHaveBeenCalled();
+    expect(handler).toHaveBeenCalledTimes(0);
   });
 
   it("should call the handler", async () => {
@@ -25,13 +34,20 @@ describe("safe middleware", () => {
 
     await expect(safe(middleware)(handler)(ctx, next)).resolves.toBeUndefined();
     expect(handler).toHaveBeenCalledWith(ctx, next);
-    expect(handler).toHaveBeenCalledWith(ctx, next);
+    expect(middleware).toHaveBeenCalled();
   });
 
-  it("should throw inside handler when needed", async () => {
-    const error = jest.fn().mockRejectedValue(new Error("Fun"));
+  it("should not call handler if next has already been called", async () => {
+    const error = new Error();
+    const handler = jest.fn();
+    const middleware: Middleware = (c, n) => n();
+    const nextMiddleware: Middleware = (c, n) => {
+      throw error;
+    };
 
-    await expect(safe(error)(error)(ctx, next)).rejects.toThrow(/Fun/);
-    expect(error).toHaveBeenCalledTimes(2);
+    const composed = compose([safe(middleware)(handler), nextMiddleware]);
+
+    await expect(composed(ctx, next)).rejects.toThrow(error);
+    expect(handler).toHaveBeenCalledTimes(0);
   });
 });

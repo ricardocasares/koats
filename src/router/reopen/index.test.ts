@@ -48,4 +48,25 @@ describe("/reopen", () => {
       .get("/reopen/1")
       .expect(snapshot);
   });
+
+  it("should fail when unlock is not possible", async () => {
+    jest.spyOn<User, "id">(users, "id").mockResolvedValue(user);
+    jest.spyOn<User, "unlock">(users, "unlock").mockRejectedValue(new Error());
+
+    await request(app)
+      .get("/reopen/1")
+      .expect(snapshot);
+  });
+
+  it("should fail when email not send", async () => {
+    jest.spyOn<User, "id">(users, "id").mockResolvedValue(user);
+    jest
+      .spyOn<User, "unlock">(users, "unlock")
+      .mockResolvedValue({ ...user, locked: false });
+    jest.spyOn<Email, "send">(emails, "send").mockRejectedValue(new Error());
+
+    await request(app)
+      .get("/reopen/1")
+      .expect(snapshot);
+  });
 });

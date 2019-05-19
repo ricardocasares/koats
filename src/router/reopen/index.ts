@@ -1,13 +1,8 @@
+import compose from "koa-compose";
 import { validate } from "./validate";
 import { getAccount } from "./getAccount";
-import { unlockAccount } from "@/middleware/unlockAccount";
-import { sendEmail } from "@/middleware/sendEmail";
-import { response } from "./response";
+import { unlock } from "./unlock";
+import { respond } from "./respond";
+import { email } from "./email";
 
-export const reopen = [
-  validate,
-  getAccount,
-  unlockAccount,
-  sendEmail,
-  response
-];
+export const reopen = compose([validate, getAccount, unlock, email, respond]);

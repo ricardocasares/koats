@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/reopen should fail when email not send 1`] = `
+Object {
+  "body": Object {
+    "message": "Email not sent",
+    "state": Object {
+      "account": Object {
+        "email": "me@app.io",
+        "id": 1,
+        "locked": false,
+      },
+    },
+    "status": 500,
+  },
+  "headers": Object {
+    "connection": "close",
+    "content-length": "105",
+    "content-type": "application/json; charset=utf-8",
+    "strict-transport-security": "max-age=15552000; includeSubDomains",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "SAMEORIGIN",
+    "x-xss-protection": "1; mode=block",
+  },
+  "status": 500,
+}
+`;
+
 exports[`/reopen should fail when no account is found 1`] = `
 Object {
   "body": Object {
@@ -19,6 +47,34 @@ Object {
     "x-xss-protection": "1; mode=block",
   },
   "status": 404,
+}
+`;
+
+exports[`/reopen should fail when unlock is not possible 1`] = `
+Object {
+  "body": Object {
+    "message": "Cannot unlock this account",
+    "state": Object {
+      "account": Object {
+        "email": "me@app.io",
+        "id": 1,
+        "locked": true,
+      },
+    },
+    "status": 403,
+  },
+  "headers": Object {
+    "connection": "close",
+    "content-length": "116",
+    "content-type": "application/json; charset=utf-8",
+    "strict-transport-security": "max-age=15552000; includeSubDomains",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "SAMEORIGIN",
+    "x-xss-protection": "1; mode=block",
+  },
+  "status": 403,
 }
 `;
 
