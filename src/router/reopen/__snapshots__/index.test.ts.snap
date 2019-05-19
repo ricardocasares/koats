@@ -25,23 +25,13 @@ Object {
 exports[`/reopen should find an account by email as failover 1`] = `
 Object {
   "body": Object {
-    "message": "response sent",
-    "state": Object {
-      "account": Object {
-        "email": "me@app.io",
-        "id": 1,
-        "locked": false,
-      },
-      "email": Object {
-        "id": 1,
-        "sent": true,
-        "to": "me@app.io",
-      },
-    },
+    "email": "me@app.io",
+    "id": 1,
+    "locked": false,
   },
   "headers": Object {
     "connection": "close",
-    "content-length": "137",
+    "content-length": "43",
     "content-type": "application/json; charset=utf-8",
     "strict-transport-security": "max-age=15552000; includeSubDomains",
     "x-content-type-options": "nosniff",
@@ -57,23 +47,13 @@ Object {
 exports[`/reopen should reopen a given account 1`] = `
 Object {
   "body": Object {
-    "message": "response sent",
-    "state": Object {
-      "account": Object {
-        "email": "me@app.io",
-        "id": 1,
-        "locked": false,
-      },
-      "email": Object {
-        "id": 1,
-        "sent": true,
-        "to": "me@app.io",
-      },
-    },
+    "email": "me@app.io",
+    "id": 1,
+    "locked": false,
   },
   "headers": Object {
     "connection": "close",
-    "content-length": "137",
+    "content-length": "43",
     "content-type": "application/json; charset=utf-8",
     "strict-transport-security": "max-age=15552000; includeSubDomains",
     "x-content-type-options": "nosniff",
