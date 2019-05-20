@@ -33,7 +33,7 @@ describe("safe middleware", () => {
     expect(info).toHaveBeenNthCalledWith(
       2,
       { responseTime: 2 },
-      "execution took 2ms"
+      "middleware: execution took 2ms"
     );
   });
 });
