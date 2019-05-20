@@ -16,10 +16,10 @@ export const safe = (a: Middleware) => (b: Middleware): Middleware => async (
   } catch (err) {
     ctx.err = err;
 
-    if (!flag) {
-      await b(ctx, next);
-    } else {
+    if (flag) {
       throw err;
     }
+
+    await b(ctx, next);
   }
 };
