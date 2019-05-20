@@ -5,13 +5,14 @@ export const safe = (a: Middleware) => (b: Middleware): Middleware => async (
   next
 ) => {
   let flag = false;
-  const call = async () => {
+
+  const nextFn = async () => {
     flag = true;
     await next();
   };
 
   try {
-    await a(ctx, call);
+    await a(ctx, nextFn);
   } catch (err) {
     ctx.err = err;
 

@@ -1,10 +1,10 @@
 import compose from "koa-compose";
 import { safe } from "./safe";
-import { Context, Middleware } from "@/models";
+import { AppContext, Middleware } from "@/models";
 import { createContext } from "@/test/utils";
 
 describe("safe middleware", () => {
-  let ctx: Context;
+  let ctx: AppContext;
   let next: jest.Mock;
 
   beforeEach(() => {

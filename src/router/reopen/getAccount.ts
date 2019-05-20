@@ -1,10 +1,11 @@
 import compose from "koa-compose";
 import { safe } from "@/middleware/safe";
 import { branch } from "@/middleware/branch";
+import { measure } from "@/middleware/measure";
 import { getAccountById } from "@/middleware/getAccountById";
 import { getAccountByEmail } from "@/middleware/getAccountByEmail";
 
-const getAccountOrNext = safe(getAccountById)(async (ctx, next) => {
+const getAccountOrNext = safe(measure(getAccountById))(async (ctx, next) => {
   ctx.log.warn(ctx.err, "Failover to get by email");
 
   await next();

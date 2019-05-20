@@ -1,6 +1,6 @@
 import Koa from "koa";
 import KoaRouter from "koa-router";
-import { App, Router } from "@/models";
+import { State, Context } from "@/models";
 
-export const app: App = new Koa();
-export const router: Router = new KoaRouter();
+export const app = new Koa<State, Context>();
+export const router = new KoaRouter<State, Context>();
