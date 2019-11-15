@@ -1,9 +1,9 @@
 import { branch } from "./branch";
-import { AppContext } from "@/models";
+import { Context } from "koa";
 import { createContext } from "@/test/utils";
 
 describe("branch middleware", () => {
-  let ctx: AppContext;
+  let ctx: Context;
   let mdw: jest.Mock;
 
   beforeEach(() => {

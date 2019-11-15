@@ -1,27 +1,28 @@
 import { measure } from "./measure";
-import { AppContext, Middleware } from "@/models";
+import { Context, Middleware } from "koa";
 import { createContext } from "@/test/utils";
 
 describe("safe middleware", () => {
-  let ctx: AppContext;
+  let ctx: Context;
   let next: jest.Mock;
   let info: jest.Mock;
 
   beforeEach(() => {
     info = jest.fn();
+    // @ts-ignore
     ctx = createContext({ called: false, log: { info } });
     next = jest.fn();
   });
 
   it("should call next and logger", async () => {
-    const middleware: Middleware = (c, n) => n();
+    const middleware: Middleware = (_, n) => n();
     await expect(measure(middleware)(ctx, next)).resolves.toBeUndefined();
     expect(next).toHaveBeenCalled();
     expect(info).toHaveBeenCalledTimes(2);
   });
 
   it("should call logger with times", async () => {
-    const middleware: Middleware = (c, n) => n();
+    const middleware: Middleware = (_, n) => n();
     const date = jest
       .spyOn(Date, "now")
       .mockReturnValueOnce(2)

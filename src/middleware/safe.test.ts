@@ -1,10 +1,10 @@
 import compose from "koa-compose";
+import { Context, Middleware } from "koa";
 import { safe } from "./safe";
-import { AppContext, Middleware } from "@/models";
 import { createContext } from "@/test/utils";
 
 describe("safe middleware", () => {
-  let ctx: AppContext;
+  let ctx: Context;
   let next: jest.Mock;
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe("safe middleware", () => {
 
   it("should call next", async () => {
     const handler = jest.fn();
-    const middleware: Middleware = (c, n) => n();
+    const middleware: Middleware = (_, n) => n();
     await expect(safe(middleware)(handler)(ctx, next)).resolves.toBeUndefined();
     expect(next).toHaveBeenCalled();
     expect(handler).toHaveBeenCalledTimes(0);
@@ -40,8 +40,8 @@ describe("safe middleware", () => {
   it("should not call handler if next has already been called", async () => {
     const error = new Error();
     const handler = jest.fn();
-    const middleware: Middleware = (c, n) => n();
-    const nextMiddleware: Middleware = (c, n) => {
+    const middleware: Middleware = (_, n) => n();
+    const nextMiddleware: Middleware = (_, n) => {
       throw error;
     };
 

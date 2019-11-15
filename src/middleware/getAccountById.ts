@@ -1,4 +1,4 @@
-import { Middleware } from "@/models";
+import { Middleware } from "koa";
 
 export const getAccountById: Middleware = async (ctx, next) => {
   ctx.log.info(`finding user by id: #${ctx.params.id}`);

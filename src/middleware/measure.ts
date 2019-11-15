@@ -1,4 +1,4 @@
-import { Middleware } from "@/models";
+import { Middleware } from "koa";
 
 export const measure = (mw: Middleware): Middleware => async (ctx, next) => {
   const time = Date.now();

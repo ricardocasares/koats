@@ -1,4 +1,4 @@
-import { Middleware } from "@/models";
+import { Middleware } from "koa";
 
 export const unlockAccount: Middleware = async (ctx, next) => {
   ctx.log.info(`unlocking user account: #${ctx.state.account.id}`);

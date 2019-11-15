@@ -77,7 +77,7 @@ const safe = (a: Middleware) => (b: Middleware): Middleware => async (
 
 ```ts
 import { safe } from "@/middleware/safe";
-import { Middleware } from "@/models";
+import { Middleware } from "koa";
 
 // Your heart tells you to keep it simple
 const heart: Middleware = (ctx, next) => {
@@ -122,7 +122,7 @@ const branch = (p: Predicate) => (mw: Middleware): Middleware => async (
 
 ```ts
 import { branch } from "@/middleware/branch";
-import { Middleware } from "@/models";
+import { Middleware } from "koa";
 
 const html: Middleware = async (ctx, next) => {
   ctx.type = "html";

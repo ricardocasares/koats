@@ -1,4 +1,4 @@
-import { Middleware } from "@/models";
+import { Middleware } from "koa";
 
 export const validate: Middleware = async (ctx, next) => {
   ctx.log.info("validating input parameters");

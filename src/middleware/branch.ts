@@ -1,7 +1,7 @@
-import { Middleware, AppContext } from "@/models";
+import { Middleware, Context } from "koa";
 
 export interface Predicate {
-  (ctx: AppContext): boolean;
+  (ctx: Context): boolean;
 }
 
 export const branch = (mw: Middleware) => (p: Predicate): Middleware => async (

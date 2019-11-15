@@ -1,4 +1,4 @@
-import { Middleware } from "@/models";
+import { Middleware } from "koa";
 
 export const safe = (a: Middleware) => (b: Middleware): Middleware => async (
   ctx,

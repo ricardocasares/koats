@@ -8,6 +8,6 @@ export const app = createApp({
 })
   .listen(3000)
   .on("close", () => logger.info("close"))
-  .on("error", () => logger.error("error"))
+  .on("error", err => logger.error(err))
   .on("connection", () => logger.info("connection"))
   .on("listening", () => logger.info("server started http://localhost:3000/"));

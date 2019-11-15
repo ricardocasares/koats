@@ -1,9 +1,9 @@
-import { AppContext } from "@/models";
+import { Context } from "koa";
 import { Request } from "superagent";
 
-export const createContext = (props: Partial<AppContext>) => {
-  const ctx: Partial<AppContext> = { ...props };
-  return ctx as AppContext;
+export const createContext = (props: Partial<Context>) => {
+  const ctx: Partial<Context> = { ...props };
+  return ctx as Context;
 };
 
 export const snapshot = ({

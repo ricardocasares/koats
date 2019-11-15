@@ -1,4 +1,4 @@
-import { Middleware } from "@/models";
+import { Middleware } from "koa";
 
 export const errors: Middleware = async (ctx, next) => {
   try {
