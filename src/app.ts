@@ -14,6 +14,6 @@ export const createApp = (deps: Dependencies) => {
   return app
     .use(kh())
     .use(errors)
-    .use(pino({ logger: logger }))
+    .use(pino({ logger }))
     .use(router.routes());
 };
