@@ -1,4 +1,5 @@
 import { UserService, EmailService } from "@/services";
+import { Span, Tracer } from "opentracing";
 
 export interface User {
   id: number;
@@ -25,5 +26,7 @@ export interface State {
 declare module "koa" {
   interface ExtendableContext {
     dc: Dependencies;
+    spans: Span[];
+    tracer: Tracer;
   }
 }

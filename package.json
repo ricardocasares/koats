@@ -8,22 +8,24 @@
   "scripts": {
     "prebuild": "rm -rf build",
     "build": "tsc",
-    "postbuild": "babel build/ -d build/",
     "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts | pino-pretty",
     "start": "NODE_ENV=production node build/index.js",
     "test": "NODE_ENV=TEST jest"
   },
   "dependencies": {
+    "jaeger-client": "^3.17.1",
     "koa": "latest",
     "koa-compose": "latest",
     "koa-helmet": "latest",
     "koa-pino-logger": "latest",
     "koa-router": "latest",
+    "opentracing": "^0.14.4",
     "pino": "latest"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
+    "@types/jaeger-client": "^3.15.3",
     "@types/jest": "^24.0.13",
     "@types/koa": "latest",
     "@types/koa-compose": "latest",

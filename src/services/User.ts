@@ -1,15 +1,19 @@
 import { User } from "@/models";
+import { sleep } from "@/lib/utils";
 
 export class UserService {
-  id(id: number): Promise<User> {
+  async id(id: number): Promise<User> {
+    await sleep(Math.random());
     return Promise.resolve({ id, email: "meas@app.io", locked: true });
   }
 
-  email(email: string): Promise<User> {
+  async email(email: string): Promise<User> {
+    await sleep(Math.random());
     return Promise.resolve({ id: 1, email, locked: true });
   }
 
-  unlock(id: number): Promise<User> {
+  async unlock(id: number): Promise<User> {
+    await sleep(Math.random());
     return Promise.resolve({ id, email: "measd@app.io", locked: false });
   }
 }

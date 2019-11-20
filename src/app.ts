@@ -5,6 +5,7 @@ import { app } from "@/koa";
 import { logger } from "@/lib/logger";
 import { router } from "@/router";
 import { errors } from "@/middleware/errors";
+import { tracer } from "@/middleware/tracer";
 import { Dependencies } from "@/models";
 
 export const createApp = (deps: Dependencies) => {
@@ -13,6 +14,18 @@ export const createApp = (deps: Dependencies) => {
   // add middleware
   return app
     .use(kh())
+    .use(
+      tracer({
+        config: {
+          serviceName: "koats",
+          sampler: {
+            type: "const",
+            param: 1.0
+          }
+        },
+        options: { logger, tags: { version: "1.0.0" } }
+      })
+    )
     .use(errors)
     .use(pino({ logger }))
     .use(router.routes());
