@@ -26,7 +26,7 @@ export interface State {
 declare module "koa" {
   interface ExtendableContext {
     dc: Dependencies;
-    spans: Span[];
+    span?: Span;
     tracer: Tracer;
   }
 }

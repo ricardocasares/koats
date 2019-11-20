@@ -2,15 +2,13 @@ import { Middleware, Context } from "koa";
 import { Tags, FORMAT_HTTP_HEADERS } from "opentracing";
 
 export const makeSpan = (tags: Record<string, string>) => (
-  op: string,
-  mw: Middleware
+  operation: string,
+  middleware: Middleware
 ): Middleware => async (ctx, next) => {
-  ctx.spans = ctx.spans || [];
-  const { spans = [], tracer } = ctx;
   const childOf = getParentContext(ctx);
-  const current = tracer.startSpan(op, { childOf, tags });
+  const current = ctx.tracer.startSpan(operation, { tags, childOf });
 
-  spans.push(current);
+  ctx.span = current;
 
   let called = false;
   async function finish() {
@@ -20,7 +18,7 @@ export const makeSpan = (tags: Record<string, string>) => (
   }
 
   try {
-    await mw(ctx, finish);
+    await middleware(ctx, finish);
   } catch (err) {
     if (!called) {
       current.setTag(Tags.ERROR, true).log(err);
@@ -32,10 +30,8 @@ export const makeSpan = (tags: Record<string, string>) => (
 };
 
 function getParentContext(ctx: Context) {
-  const span = ctx.spans.pop();
-
-  if (span) {
-    return span.context();
+  if (ctx.span) {
+    return ctx.span.context();
   }
 
   return (
